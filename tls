@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Infinite loop printing the list of torrents and their progress
+if [[ -n $(pgrep transmission) ]]; then
+    while :; do clear; transmission-remote -l; sleep 3; done
+else
+    echo 'Transmission not running'
+fi

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+# If no torrent id is parsed, then remove all torrents marked with a *
+# The * most of the time means the file the torrent downloaded was not found
+# the last time transmission-daemon started
+if [[ -z "$1" ]]; then
+    transmission-remote -t $(transmission-remote -l | grep \* | awk '{print $1}' | tr -d \* | tr '\n' , ) -r
+else
+    transmission-remote -t $1 -r
+fi

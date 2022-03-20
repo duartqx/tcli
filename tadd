@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+
+# Download Location. If it's an empty string it'll download to the user's home
+DLOCATION="-w ~/Media/Videos" 
+TORRENT_LINK="$1"
+
+# Add the torrent to the download list and saving at DLOCATION
+tremoteAdd() {
+	transmission-remote "$DLOCATION" -a "$TORRENT_LINK" >/dev/null 2>&1
+    notify-send -u low 'Torrent Added'
+}
+
+# First checks if transmission-daemon is already running
+if ps -ef | grep transmission | grep -v 'grep\|surf' > /dev/null ; then  
+
+    # If transmission-daemon is running, the script adds the torrent to the download list
+    # Since most my torrents are anime episodes, I've set my Videos folder as the save location
+    tremoteAdd
+
+else 
+    # If the daemon is not running, runs it, waits 1 second and then adds the torrent using the tremoteAdd function
+    # The sleep is necessary because transmission-daemon takes some milliseconds to start. Because of this transmission-remote fails to connect to the daemon if run immediately.
+	
+    transmission-daemon
+    sleep 1
+    tremoteAdd
+
+fi 
