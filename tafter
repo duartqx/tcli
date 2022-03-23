@@ -1,2 +1,4 @@
 #!/usr/bin/env bash
+# TR_TORRENT_NAME is passed automatically by transmission-daemon when it calls
+# this script at the end of a download
 notify-send "Transmission Finished" "$(echo ${TR_TORRENT_NAME})"
