@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
+URL_RGX='^(http|magnet)'
+[[ ! $1 =~ $URL_RGX ]] && exit 1
 
 # Download Location. If it's an empty string it'll download to the user's home
 DLOCATION="~/Media/Videos" 
