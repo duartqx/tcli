@@ -2,12 +2,20 @@
 
 # If no torrent id is passed, then remove all torrents marked with a *
 # The * most of the time means the file the torrent downloaded was not found
-# the last time transmission-daemon started
+# the last time transmission-daemon started, because you probably removed it,
+# or the folder is not mounted
 
-toRemove=$(transmission-remote -l | grep \* | awk '{print $1}' | tr -d \* | tr '\n' , )
-
-if [[ -z "$1" ]]; then
-    transmission-remote -t "$toRemove" -r
+if [[ -n "$1" ]]; then
+    toRemove="$1"
 else
-    transmission-remote -t $1 -r
+    toRemove=$(transmission-remote -l | \
+        awk '/\*/ {printf "%s,", substr( $0, 1, length($0)-1 )}')
+        # This awk command greps the lines with a *, prints
+        # everything in a single line with printf with a comma
+        # between each element while also removing the asterisc with
+        # substr (by removing the last character from the line)
 fi
+
+transmission-remote -t "$toRemove" -r 2>&1 > /dev/null && \
+    echo 'Sucessfully removed torrents from the list' || \
+    echo 'Something went wrong'
