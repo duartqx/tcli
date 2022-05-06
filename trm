@@ -9,13 +9,13 @@ if [[ -n "$1" ]]; then
     toRemove="$1"
 else
     toRemove=$(transmission-remote -l | \
-        awk '/\*/ {printf "%s,", substr( $0, 1, length($0)-1 )}')
+        awk '/\*/ {printf "%s,", substr( $1, 1, length($1)-1 )}')
         # This awk command greps the lines with a *, prints
         # everything in a single line with printf with a comma
         # between each element while also removing the asterisc with
         # substr (by removing the last character from the line)
 fi
 
-transmission-remote -t "$toRemove" -r 2>&1 > /dev/null && \
-    echo 'Sucessfully removed torrents from the list' || \
-    echo 'Something went wrong'
+[[ -z $toRemove ]] && echo 'No torrent specified' && exit 1
+
+transmission-remote -t $toRemove -r 2>&1 >/dev/null && echo 'Sucessfully removed torrents from the list'
