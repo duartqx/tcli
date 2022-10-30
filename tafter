@@ -1,4 +1,10 @@
 #!/usr/bin/env bash
 # TR_TORRENT_NAME is passed automatically by transmission-daemon when it calls
 # this script at the end of a download
-notify-send "Transmission Finished" "$(echo ${TR_TORRENT_NAME})"
+COMPLETED="${TR_TORRENT_NAME}"
+COMPLETED_EXT=${COMPLETED##*.}
+notify-send $COMPLETED_EXT
+notify-send "Transmission Finished" "$COMPLETED"
+if [[ "$COMPLETED_EXT" == mkv || "$COMPLETED_EXT" == mp4 ]]; then
+    dbmpv --table animeplaylist --create "$COMPLETED"
+fi
