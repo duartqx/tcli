@@ -3,7 +3,7 @@ URL_RGX='^(http|magnet)|\.torrent$'
 [[ ! "$1" =~ $URL_RGX ]] && exit 1
 
 # Download Location. If it's an empty string it'll download to the user's home
-DLOCATION="~/Media/Videos" 
+DLOCATION="$HOME/Media/Videos" 
 TORRENT_LINK="$1"
 
 # Add the torrent to the download list and saving at DLOCATION
@@ -13,7 +13,7 @@ tremoteAdd() {
 }
 
 # First checks if transmission-daemon is already running
-if ps -ef | grep transmission | grep -v 'grep\|surf' >/dev/null ; then  
+if pgrep transmission >/dev/null ; then  
 
     # If transmission-daemon is running, the script adds the torrent to the
     # download list 
