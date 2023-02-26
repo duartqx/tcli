@@ -3,8 +3,12 @@ URL_RGX='^(http|magnet)|\.torrent$'
 [[ ! "$1" =~ $URL_RGX ]] && exit 1
 
 # Download Location. If it's an empty string it'll download to the user's home
-DLOCATION="$HOME/Media/Videos" 
 TORRENT_LINK="$1"
+if [[ -n $2 ]]; then
+    DLOCATION="$2"
+else
+    DLOCATION="$HOME/Media/Videos"
+fi
 
 # Add the torrent to the download list and saving at DLOCATION
 tremoteAdd() {
