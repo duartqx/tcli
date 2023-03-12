@@ -4,7 +4,9 @@
 #TORRENT_DIR="${TR_TORRENT_DIR}"
 COMPLETED="${TR_TORRENT_NAME}"
 COMPLETED_EXT=${COMPLETED##*.}
-notify-send "Transmission Finished" "$COMPLETED"
-if [[ "$COMPLETED_EXT" == mkv || "$COMPLETED_EXT" == mp4 ]]; then
-    dbmpv --table animeplaylist --create "$COMPLETED"
+DB_FILE="$HOME/.local/share/playlists.db"
+TABLE_NAME='animeplaylist'
+if [[ "$COMPLETED_EXT" == "mkv" || "$COMPLETED_EXT" == "mkv" ]]; then
+    notify-send "Transmission Finished" "$COMPLETED"
+    dbmpv "$DB_FILE" $TABLE_NAME --create "$COMPLETED"
 fi

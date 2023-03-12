@@ -6,8 +6,10 @@
 if [[ -n "$1" ]]; then
 
     case "$1" in
-        d) PATTERN="Downloading | Up & Down" ;;
-        *) PATTERN="$1" ;;
+
+    d) PATTERN="Downloading | Up & Down" ;;
+    *) PATTERN="$1" ;;
+
     esac
 
     LOOP_COMMAND() { transmission-remote -l | grep -E "$PATTERN"; }
