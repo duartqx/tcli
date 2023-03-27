@@ -12,7 +12,15 @@ if [[ -n "$1" ]]; then
 
     esac
 
-    LOOP_COMMAND() { transmission-remote -l | grep -E "$PATTERN"; }
+    LOOP_COMMAND() { 
+        _OUT="$(transmission-remote -l | grep -E "$PATTERN")"
+        if [[ -z $_OUT ]]; then
+            echo "All Downloads Finished."
+            exit
+        else 
+            echo "$_OUT"
+        fi
+    }
 else
     LOOP_COMMAND() { transmission-remote -l; }
 fi
